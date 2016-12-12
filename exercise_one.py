@@ -16,7 +16,7 @@ months = {
     },
     6: {
         "days": 30
-    }, 
+    },
     7: {
         "days": 31
     },
@@ -25,7 +25,7 @@ months = {
     },
     9: {
         "days": 30
-    }, 
+    },
     10: {
         "days": 31
     },
@@ -55,6 +55,15 @@ def dateChecker(userDate):
     except Exception as err:
         raise argparse.ArgumentTypeError("%s is an invalid date. " % userDate)
 
+def isLeapYear(year):
+    if (year % 4 != 0):
+        return False
+    elif (year % 100 != 0):
+        return True
+    elif (year % 400 != 0):
+        return False
+    else:
+        return True
 
 def calculateTotalDays(days, month, year):
     totalDays = 0
@@ -63,11 +72,11 @@ def calculateTotalDays(days, month, year):
 
     for i in range(1, month + 1):
         totalDays += months[i]["days"]
-        if (i == 2) and (year % 4 == 0):
+        if (i == 2) and isLeapYear(year):
             totalDays += 1
 
     for i in range(1, year + 1):
-        if (i % 4 == 0):
+        if isLeapYear(i):
             totalDays += 366
         else:
             totalDays += 365
@@ -79,7 +88,7 @@ def daysBetweenDates(date1, date2):
     startMonth = int(date1.split('/')[1])
     startYear = int(date1.split('/')[2])
 
-    
+
     endDay = int(date2.split('/')[0])
     endMonth = int(date2.split('/')[1])
     endYear = int(date2.split('/')[2])
@@ -93,18 +102,18 @@ if __name__ == "__main__":
     argparser = argparse.ArgumentParser(
         usage="Find the total complete days between two dates"
         )
-    
+
     argparser.add_argument(
         '--startDate', '-s'
         , type=dateChecker
         , help="Please enter a start date in form DD/MM/YYYY between 01/01/1901 and 31/12/2999 eg 30/01/2013 "
-        ) 
+        )
 
     argparser.add_argument(
         '--endDate', '-e'
         , type=dateChecker
         , help="Please enter an end date in form DD/MM/YYYY between 01/01/1901 and 31/12/2999 eg 30/01/2013 "
-        ) 
+        )
 
     arguments = argparser.parse_args()
 
